@@ -1,0 +1,21 @@
+image: google/cloud-sdk
+before_script:
+  - echo "$GOOGLE_KEY_SECRET" > key.json #Service account key
+  - gcloud auth activate-service-account --key-file key.json
+  - gcloud config set project $GCP_PROJECT
+
+stages:
+  - build
+  - deploy
+
+build_image:
+  stage: build
+  only: [master]
+  script:
+    - gcloud builds submit -t $GCR_URL
+  
+production:
+  stage: deploy
+  only: [master]
+  script:
+    - gcloud run deploy $SERVICE_NAME --image $GCR_URL --platform managed --region $GCP_REGION
