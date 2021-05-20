@@ -37,7 +37,7 @@ class Level(models.Model):
     options = (("I", "Image"), ("NI", "Not Image"))
     level_number = models.IntegerField(primary_key=True)
     answer = models.CharField(max_length=200, null=False)
-    question = models.TextField(null=True)
+    question = models.TextField(null=True,blank=True)
     score = models.IntegerField(default=100)
 
     level_file_1 = models.FileField(upload_to="level_images/", null=True, blank=True)
